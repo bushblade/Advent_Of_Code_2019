@@ -5,18 +5,17 @@ const calcFuel = mass => Math.floor(mass / 3) - 2
 const totalFuelRequired = arr =>
   arr.reduce((acc, mass) => acc + calcFuel(Number(mass)), 0)
 
+const fuelForFuel = (currentFuel, totalFuel = 0) => {
+  const fuel = calcFuel(currentFuel)
+  return fuel <= 0 ? totalFuel : fuelForFuel(fuel, totalFuel + fuel)
+}
+
 // Part One
 fs.readFile('./input1.txt', 'utf8', (err, raw) =>
   console.log(totalFuelRequired(raw.split('\n')))
 )
 
-const fuelForFuel = (currentFuel, totalFuel = 0) => {
-  if (calcFuel(currentFuel) <= 0) return totalFuel
-  const fuel = calcFuel(currentFuel)
-  return fuelForFuel(fuel, totalFuel + fuel)
-}
-
-// part 2
+// part Two
 fs.readFile('./input1.txt', 'utf8', (err, raw) => {
   console.log(
     raw
