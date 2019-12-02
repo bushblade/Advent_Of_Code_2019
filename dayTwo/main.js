@@ -21,14 +21,13 @@ const runProgram = ([...arr], index = 0) => {
 // first problem
 // console.log(runProgram(program)[0]) // 3760627
 
-const nounAndVerb = arr => {
+const nounAndVerb = ([...arr]) => {
   const allIndexes = arr.map((_, i) => i)
-  const programCopy = [...arr]
   for (const noun of allIndexes) {
     for (const verb of allIndexes) {
-      programCopy[1] = noun
-      programCopy[2] = verb
-      if (runProgram(programCopy)[0] === 19690720) {
+      arr[1] = noun
+      arr[2] = verb
+      if (runProgram(arr)[0] === 19690720) {
         return 100 * noun + verb
       }
     }
