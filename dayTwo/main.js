@@ -23,13 +23,12 @@ const runProgram = ([...arr], index = 0) => {
 
 const nounAndVerb = arr => {
   const allIndexes = arr.map((_, i) => i)
+  const programCopy = [...input]
   for (const noun of allIndexes) {
     for (const verb of allIndexes) {
-      const programCopy = [...input]
       programCopy[1] = noun
       programCopy[2] = verb
-      const result = runProgram(programCopy)[0]
-      if (result === 19690720) {
+      if (runProgram(programCopy)[0] === 19690720) {
         return 100 * noun + verb
       }
     }
