@@ -13,10 +13,28 @@ const opCode = ([...arr], codeIndex) => {
 const runProgram = ([...arr], index = 0) => {
   if (arr[index] === 99) return arr
   else if (arr[index] === 1 || arr[index] === 2) {
-    let current = index
-    return runProgram(opCode(arr, current), index + 4)
+    return runProgram(opCode(arr, index), index + 4)
   }
   return runProgram(arr, ++index)
 }
 
-console.log(runProgram(program)[0])
+// first problem
+// console.log(runProgram(program)[0]) // 3760627
+
+const nounAndVerb = arr => {
+  const allIndexes = arr.map((_, i) => i)
+  for (const noun of allIndexes) {
+    for (const verb of allIndexes) {
+      const programCopy = [...input]
+      programCopy[1] = noun
+      programCopy[2] = verb
+      const result = runProgram(programCopy)[0]
+      if (result === 19690720) {
+        return 100 * noun + verb
+      }
+    }
+  }
+}
+
+// second problem
+console.log(nounAndVerb(input)) // 7195
