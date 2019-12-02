@@ -23,7 +23,7 @@ const runProgram = ([...arr], index = 0) => {
 
 const nounAndVerb = arr => {
   const allIndexes = arr.map((_, i) => i)
-  const programCopy = [...input]
+  const programCopy = [...arr]
   for (const noun of allIndexes) {
     for (const verb of allIndexes) {
       programCopy[1] = noun
