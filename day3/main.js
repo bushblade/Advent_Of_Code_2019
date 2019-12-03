@@ -21,25 +21,24 @@ const updateCoords = (coords, direction) => {
 
 const track = wire => {
   const coords = { x: 0, y: 0 }
-  return wire
-    .map(path => {
-      const direction = path[0],
-        distance = Number(path.substring(1))
-      const trackPath = Array(distance)
-        .fill()
-        .map(() => {
-          const result = updateCoords(coords, direction)
-          Object.assign(coords, result)
-          return JSON.stringify({ ...coords })
-        })
-      return trackPath
-    })
-    .flat(1)
+  const trackPath = new Set()
+  for (const path of wire) {
+    let count = 0
+    const direction = path[0],
+      distance = Number(path.substring(1))
+    while (count < distance) {
+      const result = updateCoords(coords, direction)
+      Object.assign(coords, result)
+      trackPath.add(JSON.stringify({ ...coords }))
+      count++
+    }
+  }
+  return trackPath
 }
 
 const [firstWireTrack, secondWireTrack] = [track(firstWire), track(secondWire)]
 
-const crossPositions = firstWireTrack.filter(a => secondWireTrack.includes(a))
+const crossPositions = [...firstWireTrack].filter(a => secondWireTrack.has(a))
 
 const distances = crossPositions
   .map(JSON.parse)
