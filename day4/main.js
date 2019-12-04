@@ -35,11 +35,26 @@ const getPasswords = (start, end) => {
 // part one
 // console.log(getPasswords(start, end, validate).size)
 
+const duplicates = num => {
+  let [first, ...rest] = `${num}`
+  let str = first
+  const results = []
+  for (const char of rest) {
+    if (char === first) {
+      str += char
+    } else {
+      results.push(str)
+      str = char
+      first = char
+    }
+  }
+  results.push(str)
+  return results.filter(s => s.length === 2).length > 0
+}
+
+// console.log(duplicates(112233))
+
 // part two
-const results = [...getPasswords(start, end)].filter(num => {
-  const duplicates = `${num}`.match(/(.)\1+/g) // borrowed regex
-  const twos = duplicates.filter(match => match.length === 2)
-  return twos.length > 0 ? true : false
-})
+const results = [...getPasswords(start, end)].filter(duplicates)
 
 console.log(results.length) // 1264
