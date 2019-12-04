@@ -32,4 +32,14 @@ const getPasswords = (start, end) => {
   return result
 }
 
-console.log(getPasswords(start, end).size)
+// part one
+// console.log(getPasswords(start, end, validate).size)
+
+// part two
+const results = [...getPasswords(start, end)].filter(num => {
+  const duplicates = `${num}`.match(/(.)\1+/g) // borrowed regex
+  const twos = duplicates.filter(match => match.length === 2)
+  return twos.length > 0 ? true : false
+})
+
+console.log(results.length) // 1264
