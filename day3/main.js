@@ -19,7 +19,11 @@ const updateCoords = (coords, direction) => {
   }
 }
 
-const track = wire => {
+const stepMapOne = new Map()
+const stepMapTwo = new Map()
+
+const track = (wire, stepMap) => {
+  let step = 1
   const coords = { x: 0, y: 0 }
   const trackPath = new Set()
   for (const path of wire) {
@@ -29,19 +33,33 @@ const track = wire => {
     while (count < distance) {
       const result = updateCoords(coords, direction)
       Object.assign(coords, result)
-      trackPath.add(JSON.stringify({ ...coords }))
+      const str = JSON.stringify({ ...coords })
+      trackPath.add(str)
+      if (!stepMap.has(str)) stepMap.set(str, step)
       count++
+      step++
     }
   }
   return trackPath
 }
 
-const [firstWireTrack, secondWireTrack] = [track(firstWire), track(secondWire)]
+const [firstWireTrack, secondWireTrack] = [
+  track(firstWire, stepMapOne),
+  track(secondWire, stepMapTwo)
+]
 
-const crossPositions = [...firstWireTrack].filter(a => secondWireTrack.has(a))
+const intersections = [...firstWireTrack].filter(a => secondWireTrack.has(a))
 
-const distances = crossPositions
+const distances = intersections
   .map(JSON.parse)
   .map(({ x, y }) => Math.abs(x) + Math.abs(y))
 
-console.log(distances.sort((a, b) => a - b))
+// part 1
+console.log(distances.sort((a, b) => a - b)[0]) // 3229
+
+const partTwo = intersections.map(intersect => {
+  return stepMapOne.get(intersect) + stepMapTwo.get(intersect)
+})
+
+// part 2
+console.log(partTwo.sort((a, b) => a - b)[0])
